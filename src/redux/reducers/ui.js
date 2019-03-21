@@ -1,18 +1,22 @@
 // @flow
 
-type State = {
-  randomVariable: boolean
+export type View = 'MAIN' | 'LEADERBOARD';
+
+export type State = {
+  randomVariable: boolean,
+  currentView: View,
 };
 
 const initialState: State = {
-  randomVariable: false
+  randomVariable: false,
+  currentView: 'MAIN',
 };
 
 export default function uiReducer(
   state: State = initialState,
   action: {
     type: string,
-    randomVariable: boolean
+    ...State,
   }
 ): State {
   switch (action.type) {
@@ -20,6 +24,11 @@ export default function uiReducer(
       return {
         ...state,
         randomVariable: action.randomVariable
+      };
+    case 'SET_CURRENT_VIEW':
+      return {
+        ...state,
+        currentView: action.currentView,
       };
     default:
       return state;

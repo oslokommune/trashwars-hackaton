@@ -2,12 +2,40 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import MainView from './views/MainView';
+import Leaderboard from './views/Leaderboard';
+import { connect } from 'react-redux';
+import {setCurrentView} from './redux/actions/ui';
+
+const mapStateToProps = state => ({
+  currentView: state.ui.currentView,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentView: view => dispatch(setCurrentView(view)),
+});
 
 class App extends Component {
+  onViewMain = () => {
+    this.props.setCurrentView('MAIN');
+  };
+
+  onViewLeaderboard = () => {
+    this.props.setCurrentView('LEADERBOARD');
+  };
+
   render() {
+    const {currentView} = this.props;
+
     return (
       <div className='App'>
-        <MainView />
+        <ul>
+          <li onClick={this.onViewMain}>Main</li>
+          <li onClick={this.onViewLeaderboard}>Leaderboard</li>
+        </ul>
+
+        {currentView === 'MAIN' && <MainView />}
+        {currentView === 'LEADERBOARD' && <Leaderboard />}
+
         {/* <div>
         <pre>
                        ,,ggddY"""Ybbgg,,
@@ -39,4 +67,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
