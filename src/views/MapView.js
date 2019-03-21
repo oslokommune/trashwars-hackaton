@@ -65,6 +65,9 @@ class MapView extends Component<Props, State> {
 
   renderAreas() {
     return mockAreas.map(area => {
+      const areaIsClaimed = this.props.claims.find(
+        claim => claim.area.area_id === area.area_id
+      );
       return (
         <Polygon
           path={area.polygon.coordinates}
@@ -74,6 +77,8 @@ class MapView extends Component<Props, State> {
               this.state.selectedArea &&
               this.state.selectedArea.area_id === area.area_id
                 ? colors.yellow
+                : areaIsClaimed
+                ? 'white'
                 : '#000',
             fillOpacity: 0.4,
             strokeColor: '#000',
@@ -93,7 +98,7 @@ class MapView extends Component<Props, State> {
   renderClaimView() {
     if (!this.state.selectedArea) return null;
     const selectedAreaIsClaimed = this.props.claims.find(
-      claim => claim.areaId === this.state.selectedArea.area_id
+      claim => claim.area.area_id === this.state.selectedArea.area_id
     );
     return (
       <div>
@@ -194,7 +199,7 @@ class MapView extends Component<Props, State> {
             <div
               onClick={() => {
                 this.props.setClaim({
-                  areaId: this.state.selectedArea.area_id,
+                  area: this.state.selectedArea,
                   claimTime: new Date()
                 });
               }}

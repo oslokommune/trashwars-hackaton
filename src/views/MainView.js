@@ -7,7 +7,8 @@ import { setRandomVariable, setCurrentView } from '../redux/actions/ui';
 
 const mapStateToProps = state => {
   return {
-    ui: state.ui
+    ui: state.ui,
+    claims: state.claims
   };
 };
 
@@ -20,6 +21,7 @@ const mapDispatchToProps = dispatch => {
 
 type Props = {
   ui: Object,
+  claims: Object,
   setRandomVariable: boolean => void,
   setCurrentView: string => void
 };
@@ -28,10 +30,10 @@ type State = {};
 
 class MainView extends Component<Props, State> {
   renderActiveAreas() {
-    return ['Birkelunden', 'Schous Plass'].map(area => {
+    return this.props.claims.map(claim => {
       return (
-        <div className='list-item' key={area}>
-          {area}
+        <div className='list-item' key={claim.area.area_id}>
+          {claim.area.area_name}
         </div>
       );
     });
@@ -58,7 +60,7 @@ class MainView extends Component<Props, State> {
           <div className='number'>13%</div>
           <div className='label'>Poeng</div>
           <div className='number'>6 728 600</div>
-          <div>Aktive områder (2)</div>
+          <div>Aktive områder {this.props.claims.length}</div>
           {this.renderActiveAreas()}
           <button onClick={() => setCurrentView('MAP')}>
             + Gjør krav på område

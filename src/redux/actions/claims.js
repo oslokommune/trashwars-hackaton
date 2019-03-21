@@ -1,6 +1,6 @@
 // @flow
 
-export function setClaim(claim: { areaId: string, claimTime: Date }) {
+export function setClaim(claim: { area: Object, claimTime: Date }) {
   return {
     type: 'SET_CLAIM',
     claim
