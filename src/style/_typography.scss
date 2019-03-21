@@ -1,7 +1,42 @@
+@import 'colors';
+
 html,
 body,
 button,
 input {
   font-family: 'Titillium Web', sans-serif;
   font-size: 17px;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.9em;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1em;
+}
+
+.number {
+  font-weight: 600;
+  font-size: 3em;
+  line-height: 1em;
+  margin-top: 0.15rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.2em;
+  color: $color-yellow;
+}
+
+button {
+  font-weight: 600;
+  color: white;
+  background: darken($color-dark-blue, 10%);
+  box-shadow: 0 3px 5px rgba(black, 0.5);
+  border: 1px solid lighten($color-dark-blue, 10%);
+  padding: 0.25em 0.5em;
+  width: 100%;
 }
