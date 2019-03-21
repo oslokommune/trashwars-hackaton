@@ -3,9 +3,11 @@
 import { combineReducers } from 'redux';
 
 import ui from './ui';
+import claims from './claims';
 
 const rootReducer = combineReducers({
-  ui
+  ui,
+  claims
 });
 
 export default rootReducer;

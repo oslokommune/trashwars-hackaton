@@ -12,18 +12,23 @@ import {
 import { MarkerWithLabel } from 'react-google-maps/lib/components/addons/MarkerWithLabel';
 import { MAP_STYLE } from '../style/mapStyle';
 import mockAreas from '../mock_data/areas';
+import { setClaim, removeClaim } from '../redux/actions/claims';
 
 // import { MarkerIcon } from '../svg/MarkerIcon';
 import colors from '../style/colors';
 
 const mapStateToProps = state => {
   return {
-    ui: state.ui
+    ui: state.ui,
+    claims: state.claims
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    setClaim: claim => dispatch(setClaim(claim)),
+    removeClaim: areaId => dispatch(removeClaim(areaId))
+  };
 };
 
 type State = {
@@ -32,7 +37,9 @@ type State = {
 };
 
 type Props = {
-  ui: Object
+  ui: Object,
+  setClaim: Object => void,
+  removeClaim: string => void
 };
 
 class MapView extends Component<Props, State> {
@@ -43,52 +50,6 @@ class MapView extends Component<Props, State> {
       selectedArea: null
     };
     this.mapRef = React.createRef();
-  }
-
-  renderMarkers() {
-    // return this.props.subjects.map(subject => {
-    //   if (subject.published) {
-    //     return (
-    //       <MarkerWithLabel
-    //         key={subject.id}
-    //         position={{
-    //           lat: subject.position.latitude,
-    //           lng: subject.position.longitude
-    //         }}
-    //         icon={{
-    //           url: subject.iconUri || null
-    //         }}
-    //         labelAnchor={new google.maps.Point(30, -3)}
-    //         onClick={() => {
-    //           this.props.setSelectedSubject(subject.id);
-    //           this.props.setSelectedOperation(null);
-    //         }}
-    //       >
-    //         <div
-    //           style={{
-    //             display: 'flex',
-    //             width: 60,
-    //             justifyContent: 'center'
-    //           }}
-    //         >
-    //           <div
-    //             style={{
-    //               display: 'flex',
-    //               backgroundColor: colors.component,
-    //               color: colors.white,
-    //               fontSize: 10,
-    //               padding: 5,
-    //               borderRadius: 10,
-    //               textAlign: 'center'
-    //             }}
-    //           >
-    //             {subject.name}
-    //           </div>
-    //         </div>
-    //       </MarkerWithLabel>
-    //     );
-    //   }
-    // });
   }
 
   _handleZoomChanged() {
@@ -104,12 +65,21 @@ class MapView extends Component<Props, State> {
 
   renderAreas() {
     return mockAreas.map(area => {
+      const areaIsClaimed = this.props.claims.find(
+        claim => claim.area.area_id === area.area_id
+      );
       return (
         <Polygon
           path={area.polygon.coordinates}
           key={area.area_id}
           options={{
-            fillColor: '#000',
+            fillColor:
+              this.state.selectedArea &&
+              this.state.selectedArea.area_id === area.area_id
+                ? colors.yellow
+                : areaIsClaimed
+                ? 'white'
+                : '#000',
             fillOpacity: 0.4,
             strokeColor: '#000',
             strokeOpacity: 1,
@@ -123,6 +93,132 @@ class MapView extends Component<Props, State> {
         />
       );
     });
+  }
+
+  renderClaimView() {
+    if (!this.state.selectedArea) return null;
+    const selectedAreaIsClaimed = this.props.claims.find(
+      claim => claim.area.area_id === this.state.selectedArea.area_id
+    );
+    return (
+      <div>
+        <div
+          style={{
+            position: 'absolute',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            height: selectedAreaIsClaimed ? 350 : 200,
+            width: '100%',
+            padding: 10,
+            zIndex: 1,
+            bottom: 0,
+            backgroundColor: colors.background,
+            opacity: colors.backgroundOpacity,
+            color: 'white'
+          }}
+        >
+          {selectedAreaIsClaimed && (
+            <div
+              style={{
+                fontSize: 25,
+                marginBottom: 20,
+                textAlign: 'flex-start'
+              }}
+            >
+              Dette området må ryddes innen {this.state.selectedArea.time}{' '}
+              dager.
+            </div>
+          )}
+          <div
+            style={{ color: colors.yellow, fontSize: 20, fontWeight: 'bold' }}
+          >
+            {this.state.selectedArea.area_name}
+          </div>
+          <div>Type: Park</div>
+          <div>Størrelse: {this.state.selectedArea.size}m2</div>
+          <div>Poengfaktor: {this.state.selectedArea.point_factor}</div>
+        </div>
+        {selectedAreaIsClaimed ? (
+          <div
+            style={{
+              position: 'absolute',
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              bottom: 20,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <div
+              onClick={() => {
+                console.log('Angi som fullført.');
+              }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 40,
+                width: '80%',
+                zIndex: 1,
+                backgroundColor: colors.hamburgerMenu,
+                marginBottom: 10
+              }}
+            >
+              <div style={{ color: 'white' }}>ANGI SOM FULLFØRT</div>
+            </div>
+            <div
+              onClick={() => {
+                this.props.removeClaim(this.state.selectedArea.area_id);
+              }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 40,
+                width: '80%',
+                zIndex: 1,
+                backgroundColor: colors.hamburgerMenu
+              }}
+            >
+              <div style={{ color: 'white' }}>FJERN KRAV</div>
+            </div>
+          </div>
+        ) : (
+          <div
+            style={{
+              position: 'absolute',
+              display: 'flex',
+              width: '100%',
+              backgroundColor: 'red',
+              bottom: 30,
+              justifyContent: 'center'
+            }}
+          >
+            <div
+              onClick={() => {
+                this.props.setClaim({
+                  area: this.state.selectedArea,
+                  claimTime: new Date()
+                });
+              }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 40,
+                width: '80%',
+                zIndex: 1,
+                backgroundColor: colors.hamburgerMenu
+              }}
+            >
+              <div style={{ color: 'white' }}>Gjør krav på</div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
 
   render() {
@@ -157,7 +253,6 @@ class MapView extends Component<Props, State> {
           mapTypeControl: false
         }}
       >
-        {/* {this.renderMarkers()} */}
         {this.renderAreas()}
       </GoogleMap>
     ));
@@ -170,62 +265,7 @@ class MapView extends Component<Props, State> {
           width: window.innerWidth
         }}
       >
-        {this.state.selectedArea && (
-          <div
-            style={{
-              position: 'absolute',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              height: 200,
-              width: '100%',
-              padding: 10,
-              zIndex: 1,
-              bottom: 0,
-              backgroundColor: colors.background,
-              opacity: colors.backgroundOpacity,
-              color: 'white'
-            }}
-          >
-            <div
-              style={{ color: colors.yellow, fontSize: 20, fontWeight: 'bold' }}
-            >
-              {this.state.selectedArea.area_name}
-            </div>
-            <div>Type: Park</div>
-            <div>Størrelse: {this.state.selectedArea.size}m2</div>
-            <div>Poengfaktor: {this.state.selectedArea.point_factor}</div>
-          </div>
-        )}
-        {this.state.selectedArea && (
-          <div
-            style={{
-              position: 'absolute',
-              display: 'flex',
-              width: '100%',
-              backgroundColor: 'red',
-              bottom: 30,
-              justifyContent: 'center'
-            }}
-          >
-            <div
-              onClick={() => {
-                console.log('gjør krav på');
-              }}
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: 40,
-                width: '80%',
-                zIndex: 1,
-                backgroundColor: colors.hamburgerMenu
-              }}
-            >
-              <div style={{ color: 'white' }}>Gjør krav på</div>
-            </div>
-          </div>
-        )}
+        {this.renderClaimView()}
 
         <MapsComponent
           loadingElement={<div style={{ height: `100%` }} />}
