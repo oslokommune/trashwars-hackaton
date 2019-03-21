@@ -1,33 +1,33 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import MainView from './views/MainView';
-import Leaderboard from './views/Leaderboard';
-import { connect } from 'react-redux';
-import {setCurrentView} from './redux/actions/ui';
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.scss'
+import MainView from './views/MainView'
+import Leaderboard from './views/Leaderboard'
+import { connect } from 'react-redux'
+import { setCurrentView } from './redux/actions/ui'
 
 const mapStateToProps = state => ({
-  currentView: state.ui.currentView,
-});
+  currentView: state.ui.currentView
+})
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentView: view => dispatch(setCurrentView(view)),
-});
+  setCurrentView: view => dispatch(setCurrentView(view))
+})
 
 class App extends Component {
   onViewMain = () => {
-    this.props.setCurrentView('MAIN');
-  };
+    this.props.setCurrentView('MAIN')
+  }
 
   onViewLeaderboard = () => {
-    this.props.setCurrentView('LEADERBOARD');
-  };
+    this.props.setCurrentView('LEADERBOARD')
+  }
 
   render() {
-    const {currentView} = this.props;
+    const { currentView } = this.props
 
     return (
-      <div className='App'>
+      <div className="App">
         <ul>
           <li onClick={this.onViewMain}>Main</li>
           <li onClick={this.onViewLeaderboard}>Leaderboard</li>
@@ -63,8 +63,11 @@ class App extends Component {
         </pre>
       </div> */}
       </div>
-    );
+    )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
