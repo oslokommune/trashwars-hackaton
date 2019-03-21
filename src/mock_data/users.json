@@ -4,5 +4,11 @@
     "district_id": "0",
     "user_name": "Cliff Kenneth Barterud",
     "user_score": 1000000
+  },
+  {
+    "user_id": "1",
+    "district_id": "0",
+    "user_name": "Odd Johansen",
+    "user_score": 500000
   }
 ]
