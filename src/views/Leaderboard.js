@@ -4,17 +4,32 @@ const leaderboard = [
   {
     id: 1,
     name: 'Bøler søppelfotball',
-    score: '412 855 021'
+    score: '412 855 000'
   },
   {
     id: 2,
     name: 'Hølaløkka løkkesøppel',
-    score: '112 384 821'
+    score: '112 384 400'
   },
   {
     id: 3,
     name: 'Svartdalens svarte riddere',
-    score: '72 483 812'
+    score: '72 483 800'
+  },
+  {
+    id: 4,
+    name: 'Au Pairs de Holmenkollen',
+    score: '48 140 300'
+  },
+  {
+    id: 5,
+    name: 'Lille Tøyen søppelklubb',
+    score: '42 552 800'
+  },
+  {
+    id: 6,
+    name: 'Ernst & Young',
+    score: '28 899 000'
   }
 ]
 
