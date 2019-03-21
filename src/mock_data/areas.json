@@ -3,6 +3,8 @@
     "area_id": "0",
     "district_id": "0",
     "area_name": "Olaf Ryes Plass",
+    "point_factor": 1.2,
+    "size": 3500,
     "polygon": {
       "coordinates": [
         {
@@ -37,6 +39,8 @@
     "area_id": "1",
     "district_id": "0",
     "area_name": "Sofienbergparken",
+    "point_factor": 4,
+    "size": 11000,
     "polygon": {
       "coordinates": [
         {
@@ -75,6 +79,8 @@
     "area_id": "2",
     "district_id": "0",
     "area_name": "Birkelunden",
+    "point_factor": 1.9,
+    "size": 8000,
     "polygon": {
       "coordinates": [
         {
@@ -109,6 +115,8 @@
     "area_id": "3",
     "district_id": "0",
     "area_name": "Nedre Foss",
+    "point_factor": 2.1,
+    "size": 4000,
     "polygon": {
       "coordinates": [
         {
@@ -183,6 +191,8 @@
     "area_id": "4",
     "district_id": "0",
     "area_name": "Cubaparken",
+    "point_factor": 1.1,
+    "size": 10000,
     "polygon": {
       "coordinates": [
         {

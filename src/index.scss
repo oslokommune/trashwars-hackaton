@@ -114,14 +114,46 @@ code {
     display: block;
     flex-grow: 1;
     background: rgba($color-dark-blue, 0.8);
+    list-style-type: none;
     color: white;
-    padding: 1.5em 2.25em;
+    padding: 2em 1em;
     text-align: left;
   }
 
   &__element {
-    padding: 0.25em 0.25em;
+    padding: 0.75em 0.25em;
     font-weight: 600;
+    display: flex;
+    align-items: baseline;
+    border-bottom: 1px solid rgba(white, 0.2);
+
+    &:first-of-type {
+      border-top: 1px solid rgba(white, 0.2);
+    }
+
+    > div {
+      flex-grow: 1;
+    }
+  }
+
+  &__id {
+    display: inline-block;
+    width: 20px;
+  }
+
+  &__name {
+    font-size: 1.25em;
+    display: block;
+    width: 100%;
+  }
+
+  &__score {
+    font-size: 0.8em;
+    display: block;
+    margin-top: -0.25em;
+    color: $color-yellow;
+    font-weight: 700;
+    width: 100%;
   }
 }
 
