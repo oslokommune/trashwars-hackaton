@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import MainView from './views/MainView';
+import React, { Component } from 'react'
+import logo from './logo.svg'
+import './App.scss'
+import MainView from './views/MainView'
 
 class App extends Component {
   render() {
     return (
-      <div className='App'>
+      <div className="App">
         <MainView />
         {/* <div>
         <pre>
@@ -35,8 +35,8 @@ class App extends Component {
         </pre>
       </div> */}
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
