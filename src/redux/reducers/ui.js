@@ -11,7 +11,7 @@ export type State = {
 const initialState: State = {
   randomVariable: false,
   currentView: 'MAIN',
-  showDrawer: true
+  showDrawer: false
 };
 
 export default function uiReducer(

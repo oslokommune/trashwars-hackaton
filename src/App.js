@@ -35,7 +35,7 @@ class App extends Component {
           <li onClick={this.onViewMain}>Main</li>
           <li onClick={this.onViewLeaderboard}>Leaderboard</li>
         </ul> */}
-        {/* <MapView /> */}
+        <MapView />
         {currentView === 'MAIN' && <MainView />}
         {/* {currentView === 'Map' && <MapView />} */}
         {currentView === 'LEADERBOARD' && <Leaderboard />}
