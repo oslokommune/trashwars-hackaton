@@ -5,18 +5,20 @@ export type View = 'MAIN' | 'LEADERBOARD';
 export type State = {
   randomVariable: boolean,
   currentView: View,
+  showDrawer: boolean
 };
 
 const initialState: State = {
   randomVariable: false,
   currentView: 'MAIN',
+  showDrawer: false
 };
 
 export default function uiReducer(
   state: State = initialState,
   action: {
     type: string,
-    ...State,
+    ...State
   }
 ): State {
   switch (action.type) {
@@ -28,7 +30,12 @@ export default function uiReducer(
     case 'SET_CURRENT_VIEW':
       return {
         ...state,
-        currentView: action.currentView,
+        currentView: action.currentView
+      };
+    case 'SHOW_DRAWER':
+      return {
+        ...state,
+        showDrawer: action.showDrawer
       };
     default:
       return state;

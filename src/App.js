@@ -1,65 +1,24 @@
-import React, { Component } from 'react'
-import logo from './logo.svg'
-import './App.scss'
-import MainView from './views/MainView'
-import Leaderboard from './views/Leaderboard'
-import { connect } from 'react-redux'
-import { setCurrentView } from './redux/actions/ui'
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.scss';
+import MainView from './views/MainView';
+import Drawer from './views/Drawer';
+import Leaderboard from './views/Leaderboard';
+import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
   currentView: state.ui.currentView
-})
+});
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentView: view => dispatch(setCurrentView(view))
-})
+const mapDispatchToProps = dispatch => ({});
 
 class App extends Component {
-  onViewMain = () => {
-    this.props.setCurrentView('MAIN')
-  }
-
-  onViewLeaderboard = () => {
-    this.props.setCurrentView('LEADERBOARD')
-  }
-
   render() {
-    const { currentView } = this.props
+    const { currentView } = this.props;
 
     return (
-      <div className="App">
-        <div className="nav__open" />
-
-        {/* Class nav--is-open to open menu */}
-        <nav className="nav nav--is-open">
-          <div className="nav__close" />
-          <ul className="nav__list">
-            <li className="nav__link">Nyhetsstrøm</li>
-            <li className="nav__link">Kart</li>
-            <li className="nav__link" onClick={this.onViewLeaderboard}>
-              Leaderboard
-            </li>
-            <li className="nav__link">Galleri</li>
-          </ul>
-
-          <p className="nav__label">Min tilhørighet</p>
-          <ul className="nav__list">
-            <li className="nav__link">Cliff Kenneth Barterud</li>
-            <li
-              className="nav__link nav__link--active"
-              onClick={this.onViewMain}
-            >
-              Løkka deTrashers
-            </li>
-            <li className="nav__link">Bøler Søppelfotball</li>
-          </ul>
-
-          <ul className="nav__list">
-            <li className="nav__link">Innstillinger</li>
-            <li className="nav__link">Logg ut</li>
-          </ul>
-        </nav>
-
+      <div className='App'>
+        <Drawer />
         {currentView === 'MAIN' && <MainView />}
         {currentView === 'LEADERBOARD' && <Leaderboard />}
 
@@ -90,11 +49,11 @@ class App extends Component {
         </pre>
       </div> */}
       </div>
-    )
+    );
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(App);

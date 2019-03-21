@@ -24,3 +24,5 @@ yarn-error.log*
 
 # Jet brains
 .idea/
+
+secrets.js
