@@ -27,10 +27,10 @@ code {
 }
 
 .pageContent {
-  padding: 5.5em 1.5em 0;
+  padding: 4.5em 1.5em 0;
   background: red;
   flex-grow: 1;
-  background: rgba(#173b52, 0.8);
+  background: rgba(#173b52, 0.9);
 }
 
 .clan {
@@ -44,27 +44,24 @@ code {
 }
 
 .header {
-  height: 14em;
+  height: 12em;
   position: relative;
   border-bottom: 1px solid lighten($color-dark-blue, 10%);
 }
 
 .profile {
   position: absolute;
-  width: 10em;
+  width: 8em;
   left: 2em;
-  bottom: -5em;
+  bottom: -4em;
 
   &__image {
     background: white;
-    width: 10em;
-    height: 10em;
+    width: 8em;
+    height: 8em;
     border-radius: 50%;
     overflow: hidden;
     padding: 1em;
-  }
-
-  &__imagewrapper {
   }
 
   &__imageupload {
@@ -81,4 +78,82 @@ code {
     background-repeat: no-repeat;
     background-position: 50% 50%;
   }
+}
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &__nav {
+    display: flex;
+    justify-content: flex-start;
+    background: darken($color-dark-blue, 10%);
+    padding: 4.5em 0 0;
+  }
+
+  &__navelement {
+    display: block;
+    padding: 1em 0.5em;
+    flex-basis: 33.333%;
+    display: block;
+    color: white;
+    border-bottom: 3px solid transparent;
+
+    &--active {
+      background: darken($color-dark-blue, 15%);
+      color: $color-yellow;
+      border-bottom: 3px solid $color-yellow;
+    }
+  }
+
+  &__list {
+    display: block;
+    flex-grow: 1;
+    background: rgba($color-dark-blue, 0.9);
+    list-style-type: none;
+    color: white;
+    padding: 2em 1em;
+    text-align: left;
+  }
+
+  &__element {
+    padding: 0.75em 0.25em;
+    font-weight: 600;
+    display: flex;
+    align-items: baseline;
+    border-bottom: 1px solid rgba(white, 0.2);
+
+    &:first-of-type {
+      border-top: 1px solid rgba(white, 0.2);
+    }
+
+    > div {
+      flex-grow: 1;
+    }
+  }
+
+  &__id {
+    display: inline-block;
+    width: 20px;
+  }
+
+  &__name {
+    font-size: 1.25em;
+    display: block;
+    width: 100%;
+  }
+
+  &__score {
+    font-size: 0.8em;
+    display: block;
+    margin-top: -0.25em;
+    color: $color-yellow;
+    font-weight: 700;
+    width: 100%;
+  }
+}
+
+*:focus {
+  outline: none;
 }
