@@ -6,12 +6,16 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker
+  Marker,
+  Polygon
 } from 'react-google-maps';
 import { MarkerWithLabel } from 'react-google-maps/lib/components/addons/MarkerWithLabel';
 import { MAP_STYLE } from '../style/mapStyle';
+import mockAreas from '../mock_data/areas';
+
 // import { MarkerIcon } from '../svg/MarkerIcon';
 import colors from '../style/colors';
+console.log(mockAreas);
 
 const mapStateToProps = state => {
   return {
@@ -97,6 +101,29 @@ class MapView extends Component<Props, State> {
     }
   }
 
+  renderAreas() {
+    return (
+      <Polygon
+        path={[
+          { lat: 59.92344, lng: 10.75606 },
+          { lat: 29.0459633, lng: 41.0212904 },
+          { lat: 29.0449333, lng: 41.0167573 }
+        ]}
+        key={1}
+        options={{
+          fillColor: '#000',
+          fillOpacity: 0.4,
+          strokeColor: '#000',
+          strokeOpacity: 1,
+          strokeWeight: 1
+        }}
+        onClick={() => {
+          console.log('ahmet');
+        }}
+      />
+    );
+  }
+
   render() {
     const { ui } = this.props;
     // const bounds = new window.google.maps.LatLngBounds();
@@ -130,6 +157,7 @@ class MapView extends Component<Props, State> {
         }}
       >
         {/* {this.renderMarkers()} */}
+        {this.renderAreas()}
       </GoogleMap>
     ));
     return (
