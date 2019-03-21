@@ -30,19 +30,7 @@ class MainView extends Component<Props, State> {
   renderActiveAreas() {
     return ['Birkelunden', 'Schous Plass'].map(area => {
       return (
-        <div
-          key={area}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            height: 20,
-            backgroundColor: 'lightGray',
-            marginBottom: 10,
-            marginRight: 30,
-            marginLeft: 30,
-            padding: 10
-          }}
-        >
+        <div className='list-item' key={area}>
           {area}
         </div>
       );
@@ -50,64 +38,31 @@ class MainView extends Component<Props, State> {
   }
 
   render() {
-    const { ui, setRandomVariable, setCurrentView } = this.props;
+    const { ui, setCurrentView } = this.props;
     return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          width: '100%',
-          margin: 0,
-          padding: 0
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            height: 350,
-            backgroundColor: colors.background,
-            opacity: colors.backgroundOpacity
-          }}
-        />
-        <div
-          style={{
-            display: 'flex',
-            height: '100%',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            backgroundColor: colors.background
-          }}
-        >
+      <div className='page'>
+        <div className='header'>
           <div className='profile'>
             <div className='profile__imagewrapper'>
               <img src='/img/profile.png' className='profile__image' />
               <a href='#' className='profile__imageupload' />
             </div>
           </div>
-          <div style={{ color: colors.yellow }}>Løkka deTrashers</div>
-          <div style={{ color: 'white' }}>26 medlemmer</div>
-          <div style={{ color: 'white' }}>Kontrolert område: 13%</div>
-          <div style={{ color: 'white' }}>POENG</div>
-          <div style={{ color: 'white' }}>6728600</div>
-          <div style={{ color: 'white' }}>Aktive områder (2)</div>
-          {this.renderActiveAreas()}
-          <div
-            onClick={() => setCurrentView('Map')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              height: 20,
-              backgroundColor: 'black',
-              marginBottom: 60,
-              marginRight: 30,
-              marginLeft: 30,
-              padding: 10,
-              color: colors.lightBlue
-            }}
-          >
-            + Gjør krav på område
+        </div>
+        <div className='pageContent'>
+          <div className='clan'>
+            <div className='title'>Løkka deTrashers</div>
+            <div>26 medlemmer</div>
           </div>
+          <div className='label'>Kontrolert område</div>
+          <div className='number'>13%</div>
+          <div className='label'>Poeng</div>
+          <div className='number'>6 728 600</div>
+          <div>Aktive områder (2)</div>
+          {this.renderActiveAreas()}
+          <button onClick={() => setCurrentView('MAP')}>
+            + Gjør krav på område
+          </button>
         </div>
       </div>
     );

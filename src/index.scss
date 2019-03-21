@@ -18,11 +18,42 @@ code {
     monospace;
 }
 
-.profile {
+.page {
+  min-height: 100vh;
+  text-align: left;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.pageContent {
+  padding: 5.5em 1.5em 0;
+  background: red;
+  flex-grow: 1;
+  background: rgba(#173b52, 0.8);
+}
+
+.clan {
+  margin-bottom: 2em;
+}
+
+.list-item {
+  background: lighten($color-dark-blue, 10%);
+  padding: 0.25em 0.5em;
+  margin: 0.25em 0;
+}
+
+.header {
+  height: 14em;
   position: relative;
+  border-bottom: 1px solid lighten($color-dark-blue, 10%);
+}
+
+.profile {
+  position: absolute;
   width: 10em;
-  margin-top: -5em;
-  margin-left: 1em;
+  left: 2em;
+  bottom: -5em;
 
   &__image {
     background: white;
