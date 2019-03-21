@@ -54,9 +54,15 @@
   &__open {
     height: 2em;
     width: 2em;
-    background: url('/assets/icons/open.svg') no-repeat center center;
     position: absolute;
     top: 1em;
     right: 1em;
+  }
+  &__open {
+    background: url('/assets/icons/open.svg') no-repeat center center;
+    z-index: 1;
+  }
+  &__close {
+    background: url('/assets/icons/close.svg') no-repeat center center;
   }
 }

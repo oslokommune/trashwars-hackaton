@@ -2,24 +2,42 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.scss';
 import MainView from './views/MainView';
+import MapView from './views/MapView';
 import Drawer from './views/Drawer';
 import Leaderboard from './views/Leaderboard';
 import { connect } from 'react-redux';
+import { setCurrentView } from './redux/actions/ui';
 
 const mapStateToProps = state => ({
   currentView: state.ui.currentView
 });
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  setCurrentView: view => dispatch(setCurrentView(view))
+});
 
 class App extends Component {
+  onViewMain = () => {
+    this.props.setCurrentView('MAIN');
+  };
+
+  onViewLeaderboard = () => {
+    this.props.setCurrentView('LEADERBOARD');
+  };
+
   render() {
     const { currentView } = this.props;
 
     return (
       <div className='App'>
         <Drawer />
+        {/* <ul>
+          <li onClick={this.onViewMain}>Main</li>
+          <li onClick={this.onViewLeaderboard}>Leaderboard</li>
+        </ul> */}
+        {/* <MapView /> */}
         {currentView === 'MAIN' && <MainView />}
+        {/* {currentView === 'Map' && <MapView />} */}
         {currentView === 'LEADERBOARD' && <Leaderboard />}
 
         {/* <div>

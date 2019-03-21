@@ -4,5 +4,11 @@
     "area_id": "0",
     "finished_time": "2019-03-21T13:44:23+0000",
     "points": 1000000
+  },
+  {
+    "clan_id": "1",
+    "area_id": "1",
+    "finished_time": "2019-03-21T13:44:23+0000",
+    "points": 500000
   }
 ]
