@@ -28,10 +28,37 @@ class App extends Component {
 
     return (
       <div className="App">
-        <ul>
-          <li onClick={this.onViewMain}>Main</li>
-          <li onClick={this.onViewLeaderboard}>Leaderboard</li>
-        </ul>
+        <div className="nav__open" />
+
+        {/* Class nav--is-open to open menu */}
+        <nav className="nav nav--is-open">
+          <div className="nav__close" />
+          <ul className="nav__list">
+            <li className="nav__link">Nyhetsstrøm</li>
+            <li className="nav__link">Kart</li>
+            <li className="nav__link" onClick={this.onViewLeaderboard}>
+              Leaderboard
+            </li>
+            <li className="nav__link">Galleri</li>
+          </ul>
+
+          <p className="nav__label">Min tilhørighet</p>
+          <ul className="nav__list">
+            <li className="nav__link">Cliff Kenneth Barterud</li>
+            <li
+              className="nav__link nav__link--active"
+              onClick={this.onViewMain}
+            >
+              Løkka deTrashers
+            </li>
+            <li className="nav__link">Bøler Søppelfotball</li>
+          </ul>
+
+          <ul className="nav__list">
+            <li className="nav__link">Innstillinger</li>
+            <li className="nav__link">Logg ut</li>
+          </ul>
+        </nav>
 
         {currentView === 'MAIN' && <MainView />}
         {currentView === 'LEADERBOARD' && <Leaderboard />}
