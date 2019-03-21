@@ -24,6 +24,28 @@ type Props = {
 type State = {};
 
 class MainView extends Component<Props, State> {
+  renderActiveAreas() {
+    return ['Birkelunden', 'Schous Plass'].map(area => {
+      return (
+        <div
+          key={area}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            height: 20,
+            backgroundColor: 'lightGray',
+            marginBottom: 10,
+            marginRight: 30,
+            marginLeft: 30,
+            padding: 10
+          }}
+        >
+          {area}
+        </div>
+      );
+    });
+  }
+
   render() {
     const { ui, setRandomVariable } = this.props;
     return (
@@ -31,7 +53,7 @@ class MainView extends Component<Props, State> {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          height: '100%',
+          height: '100vh',
           width: '100%',
           margin: 0,
           padding: 0,
@@ -40,13 +62,37 @@ class MainView extends Component<Props, State> {
       >
         <div
           style={{
+            display: 'flex',
             flex: 1,
+            height: '100%',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
             marginTop: 200,
             backgroundColor: 'darkBlue'
           }}
         >
           <div style={{ color: 'yellow' }}>Løkka deTrashers</div>
-          <div>26 medlemmer</div>
+          <div style={{ color: 'white' }}>26 medlemmer</div>
+          <div style={{ color: 'white' }}>Kontrolert område: 13%</div>
+          <div style={{ color: 'white' }}>POENG</div>
+          <div style={{ color: 'white' }}>6728600</div>
+          <div style={{ color: 'white' }}>Aktive områder (2)</div>
+          {this.renderActiveAreas()}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              height: 20,
+              backgroundColor: 'black',
+              marginBottom: 60,
+              marginRight: 30,
+              marginLeft: 30,
+              padding: 10,
+              color: 'lightBlue'
+            }}
+          >
+            + Gjør krav på område
+          </div>
         </div>
       </div>
     );
