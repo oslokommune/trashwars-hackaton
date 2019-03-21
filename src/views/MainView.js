@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setRandomVariable } from '../redux/actions/ui';
+import colors from '../style/colors';
+import { setRandomVariable, setCurrentView } from '../redux/actions/ui';
 
 const mapStateToProps = state => {
   return {
@@ -12,13 +13,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setRandomVariable: value => dispatch(setRandomVariable(value))
+    setRandomVariable: value => dispatch(setRandomVariable(value)),
+    setCurrentView: currentView => dispatch(setCurrentView(currentView))
   };
 };
 
 type Props = {
   ui: Object,
-  setRandomVariable: boolean => void
+  setRandomVariable: boolean => void,
+  setCurrentView: string => void
 };
 
 type State = {};
@@ -47,7 +50,7 @@ class MainView extends Component<Props, State> {
   }
 
   render() {
-    const { ui, setRandomVariable } = this.props;
+    const { ui, setRandomVariable, setCurrentView } = this.props;
     return (
       <div
         style={{
@@ -56,19 +59,24 @@ class MainView extends Component<Props, State> {
           height: '100vh',
           width: '100%',
           margin: 0,
-          padding: 0,
-          backgroundColor: 'lightGray'
+          padding: 0
         }}
       >
         <div
           style={{
             display: 'flex',
-            flex: 1,
+            height: 350,
+            backgroundColor: colors.background,
+            opacity: colors.backgroundOpacity
+          }}
+        />
+        <div
+          style={{
+            display: 'flex',
             height: '100%',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            marginTop: 200,
-            backgroundColor: 'darkBlue'
+            backgroundColor: colors.background
           }}
         >
           <div className='profile'>
@@ -77,7 +85,7 @@ class MainView extends Component<Props, State> {
               <a href='#' className='profile__imageupload' />
             </div>
           </div>
-          <div style={{ color: 'yellow' }}>Løkka deTrashers</div>
+          <div style={{ color: colors.yellow }}>Løkka deTrashers</div>
           <div style={{ color: 'white' }}>26 medlemmer</div>
           <div style={{ color: 'white' }}>Kontrolert område: 13%</div>
           <div style={{ color: 'white' }}>POENG</div>
@@ -85,6 +93,7 @@ class MainView extends Component<Props, State> {
           <div style={{ color: 'white' }}>Aktive områder (2)</div>
           {this.renderActiveAreas()}
           <div
+            onClick={() => setCurrentView('Map')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -94,7 +103,7 @@ class MainView extends Component<Props, State> {
               marginRight: 30,
               marginLeft: 30,
               padding: 10,
-              color: 'lightBlue'
+              color: colors.lightBlue
             }}
           >
             + Gjør krav på område
