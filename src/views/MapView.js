@@ -122,7 +122,12 @@ class MapView extends Component<Props, State> {
           lng: 10.75606
         }}
         onZoomChanged={() => this._handleZoomChanged()}
-        options={{ streetViewControl: false, styles: MAP_STYLE }}
+        options={{
+          streetViewControl: false,
+          styles: MAP_STYLE,
+          fullscreenControl: false,
+          mapTypeControl: false
+        }}
       >
         {/* {this.renderMarkers()} */}
       </GoogleMap>
