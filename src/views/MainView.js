@@ -30,23 +30,24 @@ class MainView extends Component<Props, State> {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           height: '100%',
           width: '100%',
-          justifyContent: 'center'
+          margin: 0,
+          padding: 0,
+          backgroundColor: 'lightGray'
         }}
       >
         <div
-          onClick={() => {
-            setRandomVariable(!ui.randomVariable);
-          }}
           style={{
-            marginTop: 100,
-            height: 100,
-            width: 300,
-            backgroundColor: ui.randomVariable ? 'blue' : 'red'
+            flex: 1,
+            marginTop: 200,
+            backgroundColor: 'darkBlue'
           }}
-        />
+        >
+          <div style={{ color: 'yellow' }}>Løkka deTrashers</div>
+          <div>26 medlemmer</div>
+        </div>
       </div>
     );
   }
