@@ -6,10 +6,13 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker
+  Marker,
+  Polygon
 } from 'react-google-maps';
 import { MarkerWithLabel } from 'react-google-maps/lib/components/addons/MarkerWithLabel';
 import { MAP_STYLE } from '../style/mapStyle';
+import mockAreas from '../mock_data/areas';
+
 // import { MarkerIcon } from '../svg/MarkerIcon';
 import colors from '../style/colors';
 
@@ -24,7 +27,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 type State = {
-  zoomLevel: number
+  zoomLevel: number,
+  selectedArea: ?Object
 };
 
 type Props = {
@@ -35,7 +39,8 @@ class MapView extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      zoomLevel: 15
+      zoomLevel: 15,
+      selectedArea: null
     };
     this.mapRef = React.createRef();
   }
@@ -97,6 +102,29 @@ class MapView extends Component<Props, State> {
     }
   }
 
+  renderAreas() {
+    return mockAreas.map(area => {
+      return (
+        <Polygon
+          path={area.polygon.coordinates}
+          key={area.area_id}
+          options={{
+            fillColor: '#000',
+            fillOpacity: 0.4,
+            strokeColor: '#000',
+            strokeOpacity: 1,
+            strokeWeight: 1
+          }}
+          onClick={() => {
+            this.setState({
+              selectedArea: area
+            });
+          }}
+        />
+      );
+    });
+  }
+
   render() {
     const { ui } = this.props;
     // const bounds = new window.google.maps.LatLngBounds();
@@ -130,6 +158,7 @@ class MapView extends Component<Props, State> {
         }}
       >
         {/* {this.renderMarkers()} */}
+        {this.renderAreas()}
       </GoogleMap>
     ));
     return (
@@ -141,6 +170,63 @@ class MapView extends Component<Props, State> {
           width: window.innerWidth
         }}
       >
+        {this.state.selectedArea && (
+          <div
+            style={{
+              position: 'absolute',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              height: 200,
+              width: '100%',
+              padding: 10,
+              zIndex: 1,
+              bottom: 0,
+              backgroundColor: colors.background,
+              opacity: colors.backgroundOpacity,
+              color: 'white'
+            }}
+          >
+            <div
+              style={{ color: colors.yellow, fontSize: 20, fontWeight: 'bold' }}
+            >
+              {this.state.selectedArea.area_name}
+            </div>
+            <div>Type: Park</div>
+            <div>Størrelse: {this.state.selectedArea.size}m2</div>
+            <div>Poengfaktor: {this.state.selectedArea.point_factor}</div>
+          </div>
+        )}
+        {this.state.selectedArea && (
+          <div
+            style={{
+              position: 'absolute',
+              display: 'flex',
+              width: '100%',
+              backgroundColor: 'red',
+              bottom: 30,
+              justifyContent: 'center'
+            }}
+          >
+            <div
+              onClick={() => {
+                console.log('gjør krav på');
+              }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 40,
+                width: '80%',
+                zIndex: 1,
+                backgroundColor: colors.hamburgerMenu
+              }}
+            >
+              <div style={{ color: 'white' }}>Gjør krav på</div>
+            </div>
+          </div>
+        )}
+
         <MapsComponent
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: '100vh' }} />}
