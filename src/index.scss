@@ -82,3 +82,49 @@ code {
     background-position: 50% 50%;
   }
 }
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &__nav {
+    display: flex;
+    justify-content: flex-start;
+    background: darken($color-dark-blue, 10%);
+    padding: 4.5em 0 0;
+  }
+
+  &__navelement {
+    display: block;
+    padding: 1em 0.5em;
+    flex-basis: 33.333%;
+    display: block;
+    color: white;
+    border-bottom: 3px solid transparent;
+
+    &--active {
+      background: darken($color-dark-blue, 15%);
+      color: $color-yellow;
+      border-bottom: 3px solid $color-yellow;
+    }
+  }
+
+  &__list {
+    display: block;
+    flex-grow: 1;
+    background: rgba($color-dark-blue, 0.8);
+    color: white;
+    padding: 1.5em 2.25em;
+    text-align: left;
+  }
+
+  &__element {
+    padding: 0.25em 0.25em;
+    font-weight: 600;
+  }
+}
+
+*:focus {
+  outline: none;
+}
