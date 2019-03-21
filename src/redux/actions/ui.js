@@ -1,6 +1,6 @@
 // @flow
 
-import {View} from '../actions/ui';
+import { View } from '../actions/ui';
 
 export function setRandomVariable(randomVariable: boolean) {
   return {
@@ -12,6 +12,13 @@ export function setRandomVariable(randomVariable: boolean) {
 export function setCurrentView(currentView: View) {
   return {
     type: 'SET_CURRENT_VIEW',
-    currentView,
+    currentView
+  };
+}
+
+export function showDrawer(showDrawer: boolean) {
+  return {
+    type: 'SHOW_DRAWER',
+    showDrawer
   };
 }

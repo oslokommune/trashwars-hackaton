@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.scss';
 import MainView from './views/MainView';
 import MapView from './views/MapView';
+import Drawer from './views/Drawer';
 import Leaderboard from './views/Leaderboard';
 import { connect } from 'react-redux';
 import { setCurrentView } from './redux/actions/ui';
@@ -29,11 +30,12 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <ul>
+        <Drawer />
+        {/* <ul>
           <li onClick={this.onViewMain}>Main</li>
           <li onClick={this.onViewLeaderboard}>Leaderboard</li>
-        </ul>
-        <MapView />
+        </ul> */}
+        {/* <MapView /> */}
         {currentView === 'MAIN' && <MainView />}
         {/* {currentView === 'Map' && <MapView />} */}
         {currentView === 'LEADERBOARD' && <Leaderboard />}
