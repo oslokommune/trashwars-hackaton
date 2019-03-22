@@ -8,5 +8,15 @@
     "clanId": "1",
     "userId": "1",
     "clanMemberScore": 500000
+  },
+  {
+    "clanId": "2",
+    "userId": "0",
+    "clanMemberScore": 500000
+  },
+  {
+    "clanId": "4",
+    "userId": "0",
+    "clanMemberScore": 500000
   }
 ]

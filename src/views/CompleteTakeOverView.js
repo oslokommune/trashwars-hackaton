@@ -81,7 +81,7 @@ class CompleteTakeOverView extends Component<Props, State> {
       finishedTime: new Date(),
       points: score
     });
-    addUserScore(score);
+    addUserScore(Math.round(score));
     removeClaim(ui.selectedAreaId);
     setCurrentView('MAIN');
   }
@@ -198,7 +198,7 @@ class CompleteTakeOverView extends Component<Props, State> {
         >
           <input
             type='number'
-            placeholder='0'
+            placeholder='Hvor mange poser ble det?'
             style={{
               display: 'flex',
               flex: 1,
