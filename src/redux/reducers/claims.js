@@ -2,8 +2,14 @@
 import mockClaims from '../../mock_data/claims';
 import mockFulfilledClaims from '../../mock_data/fulfilledClaim';
 
+export type Claim = {
+  clanId: string,
+  areaId: string,
+  time: string 
+}
+
 export type State = {
-  claims: Array<{ clanId: string, areaId: string, time: string }>,
+  claims: Array<Claim>,
   fulfilledClaim: Array<{
     clanId: string,
     areaId: string,
@@ -21,7 +27,7 @@ export default function claimsReducer(
   action: {
     type: string,
     areaId: string,
-    claim: { clanId: string, areaId: string, time: string },
+    claim: Claim,
     fulfilledClaim: {
       clanId: string,
       areaId: string,
