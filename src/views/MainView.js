@@ -37,17 +37,21 @@ type State = {};
 
 class MainView extends Component<Props, State> {
   renderActiveAreas() {
-    return getRelevantClaims().map(relevantClaim => {
-      return (
-        <div className='list-item' key={relevantClaim.areaId}>
-          {getAreaById(this.props.areas, relevantClaim.areaId)}
-        </div>
-      );
-    });
+    const { ui, claims, areas } = this.props;
+    return getRelevantClaims(claims.claims, ui.selectedClanId).map(
+      relevantClaim => {
+        return (
+          <div className='list-item' key={relevantClaim.areaId}>
+            {getAreaById(areas, relevantClaim.areaId).areaName}
+          </div>
+        );
+      }
+    );
   }
 
   render() {
     const { ui, setCurrentView, claims, clans, user } = this.props;
+
     return (
       <div className='page'>
         <div className='header'>
@@ -67,7 +71,10 @@ class MainView extends Component<Props, State> {
           <div className='number'>13%</div>
           <div className='label'>Poeng</div>
           <div className='number'>{user.userScore}</div>
-          <div>Aktive områder {claims ? claims.length : 0}</div>
+          <div>
+            Aktive områder{' '}
+            {getRelevantClaims(claims.claims, ui.selectedClanId).length}
+          </div>
           {this.renderActiveAreas()}
           <button onClick={() => setCurrentView('MAP')}>
             + Gjør krav på område
