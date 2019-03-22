@@ -22,6 +22,6 @@ export function fulfillClaim(fulfilledClaim: {
 }) {
   return {
     type: 'FULFILL_CLAIM',
-    fulfillClaim,
+    fulfilledClaim,
   };
 }

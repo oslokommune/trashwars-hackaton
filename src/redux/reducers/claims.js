@@ -36,12 +36,11 @@ export default function claimsReducer(
     },
   }
 ): State {
-  let index;
   switch (action.type) {
     case 'SET_CLAIM':
       return { ...state, claims: [...state.claims, action.claim] };
     case 'REMOVE_CLAIM':
-      index = state.claims.findIndex(
+      let index = state.claims.findIndex(
         claim => claim.areaId === action.areaId
       );
       return {
@@ -52,9 +51,6 @@ export default function claimsReducer(
         ]
       };
     case 'FULFILL_CLAIM':
-      index = state.claims.findIndex(
-        claim => claim.areaId === action.areaId
-      );
       return {
         ...state,
         fulfilledClaim: [

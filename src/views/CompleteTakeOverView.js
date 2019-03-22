@@ -77,7 +77,7 @@ class CompleteTakeOverView extends Component<Props, State> {
     const score = 100 * this.state.numberOfBags * pointFactor;
     fulfillClaim({
       areaId: ui.selectedAreaId,
-      clainId: ui.selectedClanId,
+      clanId: ui.selectedClanId,
       finishedTime: new Date(),
       points: score
     });
