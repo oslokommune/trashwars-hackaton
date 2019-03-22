@@ -5,13 +5,15 @@ export type View = 'MAIN' | 'LEADERBOARD';
 export type State = {
   randomVariable: boolean,
   currentView: View,
-  showDrawer: boolean
+  showDrawer: boolean,
+  selectedClanId: string
 };
 
 const initialState: State = {
   randomVariable: false,
   currentView: 'MAIN',
-  showDrawer: false
+  showDrawer: false,
+  selectedClanId: '0'
 };
 
 export default function uiReducer(
@@ -22,11 +24,6 @@ export default function uiReducer(
   }
 ): State {
   switch (action.type) {
-    case 'SET_RANDOM_VARIABLE':
-      return {
-        ...state,
-        randomVariable: action.randomVariable
-      };
     case 'SET_CURRENT_VIEW':
       return {
         ...state,
@@ -36,6 +33,11 @@ export default function uiReducer(
       return {
         ...state,
         showDrawer: action.showDrawer
+      };
+    case 'SET_SELECTED_CLAN':
+      return {
+        ...state,
+        selectedClanId: action.selectedClanId
       };
     default:
       return state;

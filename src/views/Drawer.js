@@ -1,87 +1,94 @@
 // @flow
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { setCurrentView, showDrawer } from '../redux/actions/ui'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setCurrentView, showDrawer } from '../redux/actions/ui';
 
 const mapStateToProps = state => {
   return {
     ui: state.ui
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     setCurrentView: view => dispatch(setCurrentView(view)),
     showDrawer: show => dispatch(showDrawer(show))
-  }
-}
+  };
+};
 
 type Props = {
   ui: Object,
   setCurrentView: Object => void,
   showDrawer: boolean => void
-}
+};
 
-type State = {}
+type State = {};
 
 class Drawer extends Component<Props, State> {
   onViewMain = () => {
-    this.props.showDrawer(!this.props.ui.showDrawer)
-    this.props.setCurrentView('MAIN')
-  }
+    this.props.showDrawer(!this.props.ui.showDrawer);
+    this.props.setCurrentView('MAIN');
+  };
+
+  onViewMap = () => {
+    this.props.showDrawer(!this.props.ui.showDrawer);
+    this.props.setCurrentView('MAP');
+  };
 
   onViewLeaderboard = () => {
-    this.props.showDrawer(!this.props.ui.showDrawer)
-    this.props.setCurrentView('LEADERBOARD')
-  }
+    this.props.showDrawer(!this.props.ui.showDrawer);
+    this.props.setCurrentView('LEADERBOARD');
+  };
 
   render() {
-    const { ui, showDrawer } = this.props
+    const { ui, showDrawer } = this.props;
     return (
       <div>
         <div
-          className="nav__open"
+          className='nav__open'
           onClick={() => {
-            this.props.showDrawer(!ui.showDrawer)
+            this.props.showDrawer(!ui.showDrawer);
           }}
         />
 
         {/* Class nav--is-open to open menu */}
         <nav className={ui.showDrawer ? 'nav nav--is-open' : 'nav'}>
           <div
-            className="nav__close"
+            className='nav__close'
             onClick={() => this.props.showDrawer(!ui.showDrawer)}
           />
-          <ul className="nav__list">
-            <li className="nav__link">Nyhetsstrøm</li>
-            <li className="nav__link">Kart</li>
-            <li className="nav__link" onClick={this.onViewLeaderboard}>
+          <ul className='nav__list'>
+            <li className='nav__link'>Nyhetsstrøm</li>
+            <li className='nav__link' onClick={this.onViewMap}>
+              Kart
+            </li>
+            <li className='nav__link' onClick={this.onViewLeaderboard}>
               Leaderboard
             </li>
-            <li className="nav__link">Galleri</li>
+            <li className='nav__link'>Galleri</li>
           </ul>
 
-          <p className="label">Min tilhørighet</p>
-          <ul className="nav__list">
-            <li className="nav__link">Cliff Kenneth Barterud</li>
+          <p className='label'>Min tilhørighet</p>
+          <ul className='nav__list'>
+            <li className='nav__link'>Cliff Kenneth Barterud</li>
             <li
-              className="nav__link nav__link--active"
+              className='nav__link nav__link--active'
               onClick={this.onViewMain}
             >
               Løkka deTrashers
             </li>
-            <li className="nav__link">Bøler Søppelfotball</li>
+            <li className='nav__link'>Bøler Søppelfotball</li>
           </ul>
 
-          <ul className="nav__list">
-            <li className="nav__link">Innstillinger</li>
-            <li className="nav__link">Logg ut</li>
+          <ul className='nav__list'>
+            <li className='nav__link'>Innstillinger</li>
+            <li className='nav__link'>Logg ut</li>
           </ul>
         </nav>
       </div>
-    )
+    );
   }
 }
 
-export default (connect: any)(mapStateToProps, mapDispatchToProps)(Drawer)
+export default (connect: any)(mapStateToProps, mapDispatchToProps)(Drawer);
