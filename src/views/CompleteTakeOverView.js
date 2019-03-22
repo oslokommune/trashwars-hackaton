@@ -7,20 +7,16 @@ import { setCurrentView } from '../redux/actions/ui';
 import { getAreaById } from '../selectors/areas';
 import { getClanById } from '../selectors/clans';
 
-const mapStateToProps = state => {
-  return {
-    ui: state.ui,
-    claims: state.claims,
-    clans: state.clans,
-    areas: state.areas
-  };
-};
+const mapStateToProps = state => ({
+  ui: state.ui,
+  claims: state.claims,
+  clans: state.clans,
+  areas: state.areas
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setCurrentView: currentView => dispatch(setCurrentView(currentView))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  setCurrentView: currentView => dispatch(setCurrentView(currentView))
+});
 
 type Props = {
   ui: Object,
@@ -31,25 +27,37 @@ type Props = {
 };
 
 type State = {
-  numberOfBags: number
+  numberOfBags: number,
+  pickUp: boolean,
 };
 
 class CompleteTakeOverView extends Component<Props, State> {
+  fileInput = null;
+
   constructor(props) {
     super(props);
     this.state = {
-      numberOfBags: 0
+      numberOfBags: 0,
+      pickUp: false,
     };
+
+    this.fileInput = React.createRef();
   }
 
   handleNumberOfBagsChange(event) {
     this.setState({
-      numberOfBags: event.target.value
+      numberOfBags: event.currentTarget.value
+    });
+  }
+
+  handlePickUpChange(event) {
+    this.setState({
+      pickUp: event.currentTarget.value === 'yes',
     });
   }
 
   render() {
-    const { ui, setCurrentView, claims, clans, areas } = this.props;
+    const { ui, setCurrentView, areas } = this.props;
     const selectedArea = getAreaById(areas, ui.selectedAreaId);
     return (
       <div
@@ -115,7 +123,7 @@ class CompleteTakeOverView extends Component<Props, State> {
           >
             GALLERI
           </div>
-          <div
+          <label
             style={{
               flex: 1,
               height: 40,
@@ -125,7 +133,18 @@ class CompleteTakeOverView extends Component<Props, State> {
             }}
           >
             TA BILDE
-          </div>
+            <input
+              type="file"
+              accept="image/*"
+              capture="camera"
+              ref={this.fileInput}
+              style={{
+                display: 'block',
+                height: 0,
+                width: 0,
+                marginLeft: -9999,
+              }}/>
+          </label>
         </div>
         <div
           style={{
@@ -187,30 +206,54 @@ class CompleteTakeOverView extends Component<Props, State> {
             fontSize: 15
           }}
         >
-          <div
+          <label
             style={{
               flex: 1,
               height: 40,
-              backgroundColor: 'white',
+              backgroundColor: this.state.pickUp ? 'green' : 'white',
               marginRight: 5,
               paddingTop: 8
             }}
           >
             JA
-          </div>
-          <div
+            <input
+              type="checkbox"
+              name="pickUp"
+              value="yes"
+              checked={this.state.pickUp}
+              onChange={this.handlePickUpChange.bind(this)}
+              style={{
+                display: 'block',
+                height: 0,
+                width: 0,
+                marginLeft: -9999,
+              }} />
+          </label>
+          <label
             style={{
               flex: 1,
               height: 40,
-              backgroundColor: 'white',
+              backgroundColor: this.state.pickUp ? 'white' : 'green',
               marginLeft: 5,
               paddingTop: 8
             }}
           >
             NEI
-          </div>
+            <input
+              type="checkbox"
+              name="pickUp"
+              value="no"
+              checked={!this.state.pickUp}
+              onChange={this.handlePickUpChange.bind(this)}
+              style={{
+                display: 'block',
+                height: 0,
+                width: 0,
+                marginLeft: -9999,
+              }} />
+          </label>
         </div>
-        <div
+        <button
           style={{
             height: 40,
             width: '100%',
@@ -222,7 +265,7 @@ class CompleteTakeOverView extends Component<Props, State> {
           }}
         >
           FULLFØR
-        </div>
+        </button>
       </div>
     );
   }
