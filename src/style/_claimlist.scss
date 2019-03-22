@@ -1,0 +1,35 @@
+@import 'style/colors';
+
+.claimlist {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  z-index: 10;
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+
+  & ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & li {
+      display: block;
+      width: 2em;
+      height: 2em;
+      background: #173b52;
+      text-align: center;
+      line-height: 2em;
+      margin-bottom: 0.2em;
+
+      &.selected {
+        background-color: $color-yellow;
+        color: $color-dark-blue;
+      }
+    }
+  }
+}
+

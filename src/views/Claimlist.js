@@ -2,45 +2,60 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setCurrentView, showDrawer } from '../redux/actions/ui';
+import { setSelectedArea } from '../redux/actions/ui';
+import { getAreaById } from '../selectors/areas';
 import { getRelevantClaims } from '../selectors/claims';
-import { Claim, State as ClaimState } from '../redux/reducers/claims';
+import { State as ClaimState } from '../redux/reducers/claims';
+import { State as AreaState } from '../redux/reducers/areas';
 
 const mapStateToProps = state => ({
   ui: state.ui,
   claims: state.claims,
+  areas: state.areas,
 });
 
 const mapDispatchToProps = dispatch => ({
+  setSelectedArea: areaId => dispatch(setSelectedArea(areaId)),
 });
 
 type Props = {
   ui: Object,
   claims: ClaimState,
+  areas: AreaState,
+  setSelectedArea: string => void,
 };
 
 type State = {};
 
-class Drawer extends Component<Props, State> {
+class Claimlist extends Component<Props, State> {
   render() {
-    const { claims, ui } = this.props;
-    const clanClaims = getRelevantClaims(claims, ui.selectedClanId);
+    const { claims, ui, areas } = this.props;
+    const relevantClaims = getRelevantClaims(claims.claims, ui.selectedClanId);
+    const claimedAreas = relevantClaims.map(claim => {
+      const area = getAreaById(areas, claim.areaId);
+      return {
+        claimId: claim.claimId,
+        areaId: area.areaId,
+        time: area.time,
+      };
+    });
 
-    if (!clanClaims) {
+    if (!claimedAreas) {
       return null;
     }
 
     return (
-      <div>
+      <div className="claimlist">
         <ul>
-          {clanClaims.map(claim => (<li>
-            {claim
-          </li>)}
+          {claimedAreas.map(claim => (<li
+            className={ui.selectedAreaId === claim.areaId ? 'selected' : ''}
+            key={claim.areaId}
+            onClick={() => this.props.setSelectedArea(claim.areaId)}>
+              {claim.time}</li>))}
         </ul>
       </div>
     );
   }
 }
 
-export default (connect: any)(mapStateToProps, mapDispatchToProps)(Drawer);
-
+export default (connect: any)(mapStateToProps, mapDispatchToProps)(Claimlist);

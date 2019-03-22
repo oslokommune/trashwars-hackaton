@@ -4,6 +4,7 @@ import './App.scss';
 import MainView from './views/MainView';
 import MapView from './views/MapView';
 import Drawer from './views/Drawer';
+import Claimlist from './views/Claimlist';
 import CompleteTakeOverView from './views/CompleteTakeOverView';
 import Leaderboard from './views/Leaderboard';
 import { connect } from 'react-redux';
@@ -32,6 +33,7 @@ class App extends Component {
     return (
       <div className='App'>
         <Drawer />
+        <Claimlist />
         {/* <ul>
           <li onClick={this.onViewMain}>Main</li>
           <li onClick={this.onViewLeaderboard}>Leaderboard</li>
