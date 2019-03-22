@@ -28,6 +28,12 @@ const leaderboard = [
   },
   {
     id: 6,
+    name: 'Løkka deTrashers',
+    score: '31 257 900',
+    active: true
+  },
+  {
+    id: 7,
     name: 'Ernst & Young',
     score: '28 899 000'
   }
@@ -47,7 +53,13 @@ export default class Leaderboard extends Component {
 
         <ol className="leaderboard__list">
           {leaderboard.map(l => (
-            <li className="leaderboard__element" key={l.id}>
+            <li
+              className={
+                'leaderboard__element' +
+                (l.active ? ' leaderboard__element--active' : '')
+              }
+              key={l.id}
+            >
               <span className="leaderboard__id">{l.id}</span>
               <div>
                 <span className="leaderboard__name">{l.name}</span>

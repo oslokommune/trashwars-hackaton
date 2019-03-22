@@ -113,16 +113,20 @@ code {
     background: rgba($color-dark-blue, 0.9);
     list-style-type: none;
     color: white;
-    padding: 2em 1em;
+    padding: 2em 0em;
     text-align: left;
   }
 
   &__element {
-    padding: 0.75em 0.25em;
+    padding: 0.75em 1.25em;
     font-weight: 600;
     display: flex;
     align-items: baseline;
     border-bottom: 1px solid rgba(white, 0.2);
+
+    &--active {
+      background: rgba(black, 0.15);
+    }
 
     &:first-of-type {
       border-top: 1px solid rgba(white, 0.2);
