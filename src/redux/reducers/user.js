@@ -25,6 +25,8 @@ export default function userReducer(
   switch (action.type) {
     case 'SET_USER':
       return action.user;
+    case 'ADD_USER_SCORE':
+      return { ...state, userScore: state.userScore + action.score };
     case 'REMOVE_USER':
       return null;
     default:

@@ -7,6 +7,7 @@ import { setCurrentView } from '../redux/actions/ui';
 import { getAreaById } from '../selectors/areas';
 import { getClanById } from '../selectors/clans';
 import { fulfillClaim, removeClaim } from '../redux/actions/claims';
+import { addUserScore } from '../redux/actions/user';
 
 const mapStateToProps = state => ({
   ui: state.ui,
@@ -19,6 +20,7 @@ const mapDispatchToProps = dispatch => ({
   setCurrentView: currentView => dispatch(setCurrentView(currentView)),
   fulfillClaim: claim => dispatch(fulfillClaim(claim)),
   removeClaim: areaId => dispatch(removeClaim(areaId)),
+  addUserScore: score => dispatch(addUserScore(score))
 });
 
 type Props = {
@@ -29,11 +31,12 @@ type Props = {
   setCurrentView: string => void,
   fulfillClaim: any => void,
   removeClaim: string => void,
+  addUserScore: number => void
 };
 
 type State = {
   numberOfBags: number,
-  pickUp: boolean,
+  pickUp: boolean
 };
 
 class CompleteTakeOverView extends Component<Props, State> {
@@ -43,7 +46,7 @@ class CompleteTakeOverView extends Component<Props, State> {
     super(props);
     this.state = {
       numberOfBags: 0,
-      pickUp: false,
+      pickUp: false
     };
 
     this.fileInput = React.createRef();
@@ -57,22 +60,30 @@ class CompleteTakeOverView extends Component<Props, State> {
 
   handlePickUpChange(event) {
     this.setState({
-      pickUp: event.currentTarget.value === 'yes',
+      pickUp: event.currentTarget.value === 'yes'
     });
   }
 
   handleFulfillClaim() {
-    const {ui} = this.props;
-
-    this.props.fulfillClaim({
+    const {
+      ui,
+      areas,
+      removeClaim,
+      setCurrentView,
+      fulfillClaim,
+      addUserScore
+    } = this.props;
+    const pointFactor = getAreaById(areas, ui.selectedAreaId).pointFactor;
+    const score = 100 * this.state.numberOfBags * pointFactor;
+    fulfillClaim({
       areaId: ui.selectedAreaId,
       clainId: ui.selectedClanId,
       finishedTime: new Date(),
-      points: 1000,
+      points: score
     });
-
-    this.props.removeClaim(ui.selectedAreaId);
-    this.props.setCurrentView('MAIN');
+    addUserScore(score);
+    removeClaim(ui.selectedAreaId);
+    setCurrentView('MAIN');
   }
 
   render() {
@@ -153,16 +164,17 @@ class CompleteTakeOverView extends Component<Props, State> {
           >
             TA BILDE
             <input
-              type="file"
-              accept="image/*"
-              capture="camera"
+              type='file'
+              accept='image/*'
+              capture='camera'
               ref={this.fileInput}
               style={{
                 display: 'block',
                 height: 0,
                 width: 0,
-                marginLeft: -9999,
-              }}/>
+                marginLeft: -9999
+              }}
+            />
           </label>
         </div>
         <div
@@ -236,17 +248,18 @@ class CompleteTakeOverView extends Component<Props, State> {
           >
             JA
             <input
-              type="checkbox"
-              name="pickUp"
-              value="yes"
+              type='checkbox'
+              name='pickUp'
+              value='yes'
               checked={this.state.pickUp}
               onChange={this.handlePickUpChange.bind(this)}
               style={{
                 display: 'block',
                 height: 0,
                 width: 0,
-                marginLeft: -9999,
-              }} />
+                marginLeft: -9999
+              }}
+            />
           </label>
           <label
             style={{
@@ -259,17 +272,18 @@ class CompleteTakeOverView extends Component<Props, State> {
           >
             NEI
             <input
-              type="checkbox"
-              name="pickUp"
-              value="no"
+              type='checkbox'
+              name='pickUp'
+              value='no'
               checked={!this.state.pickUp}
               onChange={this.handlePickUpChange.bind(this)}
               style={{
                 display: 'block',
                 height: 0,
                 width: 0,
-                marginLeft: -9999,
-              }} />
+                marginLeft: -9999
+              }}
+            />
           </label>
         </div>
         <button
