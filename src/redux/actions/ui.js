@@ -16,6 +16,13 @@ export function showDrawer(showDrawer: boolean) {
   };
 }
 
+export function setSelectedArea(selectedAreaId: string) {
+  return {
+    type: 'SET_SELECTED_AREA',
+    selectedAreaId
+  };
+}
+
 export function setSelectedClan(selectedClanId: string) {
   return {
     type: 'SET_SELECTED_CLAN',

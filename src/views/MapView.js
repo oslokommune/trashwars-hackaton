@@ -13,8 +13,9 @@ import { MarkerWithLabel } from 'react-google-maps/lib/components/addons/MarkerW
 import { MAP_STYLE } from '../style/mapStyle';
 import mockAreas from '../mock_data/areas';
 import { setClaim, removeClaim } from '../redux/actions/claims';
-import { getAreaClaim } from '../selectors/areas';
+import { getAreaClaim, getAreaById } from '../selectors/areas';
 import { getClanById } from '../selectors/clans';
+import { setCurrentView, setSelectedArea } from '../redux/actions/ui';
 
 // import { MarkerIcon } from '../svg/MarkerIcon';
 import colors from '../style/colors';
@@ -32,13 +33,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setClaim: claim => dispatch(setClaim(claim)),
-    removeClaim: areaId => dispatch(removeClaim(areaId))
+    removeClaim: areaId => dispatch(removeClaim(areaId)),
+    setCurrentView: currentView => dispatch(setCurrentView(currentView)),
+    setSelectedArea: areaId => dispatch(setSelectedArea(areaId))
   };
 };
 
-type State = {
-  selectedArea: ?Object
-};
+type State = {};
 
 type Props = {
   ui: Object,
@@ -47,26 +48,20 @@ type Props = {
   areas: Object,
   user: Object,
   setClaim: Object => void,
-  removeClaim: string => void
+  removeClaim: string => void,
+  setCurrentView: string => void,
+  setSelectedArea: (?string) => void
 };
 
 class MapView extends Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedArea: null
-    };
-    this.mapRef = React.createRef();
-  }
-
   renderAreas() {
     return this.props.areas.map(area => {
       const areaClaim = getAreaClaim(this.props.claims.claims, area.areaId);
 
       let fillColor = '#000';
       if (
-        this.state.selectedArea &&
-        this.state.selectedArea.areaId === area.areaId
+        this.props.ui.selectedAreaId &&
+        this.props.ui.selectedAreaId === area.areaId
       ) {
         fillColor = colors.yellow;
       } else if (areaClaim) {
@@ -88,9 +83,7 @@ class MapView extends Component<Props, State> {
             strokeWeight: 1
           }}
           onClick={() => {
-            this.setState({
-              selectedArea: area
-            });
+            this.props.setSelectedArea(area.areaId);
           }}
         />
       );
@@ -98,14 +91,12 @@ class MapView extends Component<Props, State> {
   }
 
   renderClaimView() {
-    const { ui, claims, clans, user } = this.props;
-    if (!this.state.selectedArea) return null;
-    const areaClaim = getAreaClaim(
-      claims.claims,
-      this.state.selectedArea.areaId
-    );
+    const { ui, claims, clans, areas, user, setCurrentView } = this.props;
+    if (!ui.selectedAreaId) return null;
+    const areaClaim = getAreaClaim(claims.claims, ui.selectedAreaId);
     const selectedAreaIsClaimedByMe =
       areaClaim && areaClaim.clanId === ui.selectedClanId;
+    const selectedArea = getAreaById(areas, ui.selectedAreaId);
 
     return (
       <div>
@@ -133,18 +124,17 @@ class MapView extends Component<Props, State> {
                 textAlign: 'flex-start'
               }}
             >
-              Dette området må ryddes innen {this.state.selectedArea.time}{' '}
-              dager.
+              Dette området må ryddes innen {selectedArea.time} dager.
             </div>
           )}
           <div
             style={{ color: colors.yellow, fontSize: 20, fontWeight: 'bold' }}
           >
-            {this.state.selectedArea.areaName}
+            {selectedArea.areaName}
           </div>
           <div>Type: Park</div>
-          <div>Størrelse: {this.state.selectedArea.size}m2</div>
-          <div>Poengfaktor: {this.state.selectedArea.pointFactor}</div>
+          <div>Størrelse: {selectedArea.size}m2</div>
+          <div>Poengfaktor: {selectedArea.pointFactor}</div>
         </div>
         {selectedAreaIsClaimedByMe ? (
           <div
@@ -160,7 +150,7 @@ class MapView extends Component<Props, State> {
           >
             <div
               onClick={() => {
-                console.log('Angi som fullført.');
+                setCurrentView('COMPLETE');
               }}
               style={{
                 display: 'flex',
@@ -177,7 +167,7 @@ class MapView extends Component<Props, State> {
             </div>
             <div
               onClick={() => {
-                this.props.removeClaim(this.state.selectedArea.areaId);
+                this.props.removeClaim(selectedArea.areaId);
               }}
               style={{
                 display: 'flex',
@@ -208,7 +198,7 @@ class MapView extends Component<Props, State> {
                 if (!areaClaim) {
                   this.props.setClaim({
                     clanId: this.props.ui.selectedClanId,
-                    areaId: this.state.selectedArea.areaId,
+                    areaId: selectedArea.areaId,
                     time: new Date()
                   });
                 }

@@ -1,35 +1,36 @@
-import React, { Component } from 'react'
-import logo from './logo.svg'
-import './App.scss'
-import MainView from './views/MainView'
-import MapView from './views/MapView'
-import Drawer from './views/Drawer'
-import Leaderboard from './views/Leaderboard'
-import { connect } from 'react-redux'
-import { setCurrentView } from './redux/actions/ui'
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.scss';
+import MainView from './views/MainView';
+import MapView from './views/MapView';
+import Drawer from './views/Drawer';
+import CompleteTakeOverView from './views/CompleteTakeOverView';
+import Leaderboard from './views/Leaderboard';
+import { connect } from 'react-redux';
+import { setCurrentView } from './redux/actions/ui';
 
 const mapStateToProps = state => ({
   currentView: state.ui.currentView
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   setCurrentView: view => dispatch(setCurrentView(view))
-})
+});
 
 class App extends Component {
   onViewMain = () => {
-    this.props.setCurrentView('MAIN')
-  }
+    this.props.setCurrentView('MAIN');
+  };
 
   onViewLeaderboard = () => {
-    this.props.setCurrentView('LEADERBOARD')
-  }
+    this.props.setCurrentView('LEADERBOARD');
+  };
 
   render() {
-    const { currentView } = this.props
+    const { currentView } = this.props;
 
     return (
-      <div className="App">
+      <div className='App'>
         <Drawer />
         {/* <ul>
           <li onClick={this.onViewMain}>Main</li>
@@ -39,6 +40,7 @@ class App extends Component {
         {currentView === 'MAIN' && <MainView />}
         {/* {currentView === 'Map' && <MapView />} */}
         {currentView === 'LEADERBOARD' && <Leaderboard />}
+        {currentView === 'COMPLETE' && <CompleteTakeOverView />}
 
         {/* <div>
         <pre>
@@ -67,11 +69,11 @@ class App extends Component {
         </pre>
       </div> */}
       </div>
-    )
+    );
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(App);

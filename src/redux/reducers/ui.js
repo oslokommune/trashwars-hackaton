@@ -6,13 +6,15 @@ export type State = {
   randomVariable: boolean,
   currentView: View,
   showDrawer: boolean,
-  selectedClanId: string
+  selectedAreaId: ?string,
+  selectedClanId: ?string
 };
 
 const initialState: State = {
   randomVariable: false,
   currentView: 'MAIN',
   showDrawer: false,
+  selectedAreaId: '0',
   selectedClanId: '0'
 };
 
@@ -33,6 +35,11 @@ export default function uiReducer(
       return {
         ...state,
         showDrawer: action.showDrawer
+      };
+    case 'SET_SELECTED_AREA':
+      return {
+        ...state,
+        selectedAreaId: action.selectedAreaId
       };
     case 'SET_SELECTED_CLAN':
       return {
