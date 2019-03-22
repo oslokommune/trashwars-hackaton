@@ -54,6 +54,8 @@ type Props = {
 };
 
 class MapView extends Component<Props, State> {
+  mapRef = null;
+
   renderAreas() {
     return this.props.areas.map(area => {
       const areaClaim = getAreaClaim(this.props.claims.claims, area.areaId);
@@ -270,6 +272,7 @@ class MapView extends Component<Props, State> {
           fullscreenControl: false,
           mapTypeControl: false
         }}
+        onClick={() => this.props.setSelectedArea(null)}
       >
         {this.renderAreas()}
       </GoogleMap>

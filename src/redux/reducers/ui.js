@@ -14,7 +14,7 @@ const initialState: State = {
   randomVariable: false,
   currentView: 'MAIN',
   showDrawer: false,
-  selectedAreaId: '0',
+  selectedAreaId: null,
   selectedClanId: '0'
 };
 
