@@ -16,3 +16,10 @@ export function removeUser() {
     type: 'REMOVE_USER'
   };
 }
+
+export function addUserScore(score: number) {
+  return {
+    type: 'ADD_USER_SCORE',
+    score
+  };
+}
