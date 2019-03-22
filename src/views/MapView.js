@@ -233,8 +233,11 @@ class MapView extends Component<Props, State> {
     );
   }
 
+  shouldComponentUpdate(nextProps) {
+    return this.props !== nextProps;
+  }
+
   render() {
-    const { ui } = this.props;
     // const bounds = new window.google.maps.LatLngBounds();
     // const coordinates = this.props.subjects.map(subject => {
     //   const { latitude, longitude } = subject.position;
@@ -253,30 +256,7 @@ class MapView extends Component<Props, State> {
       }, 500);
       return null;
     }
-    const MapsComponent = withGoogleMap(props => (
-      <GoogleMap
-        ref={map => {
-          this.mapRef = map;
-          //   if (map && coordinates.length > 0 && !selectedSubject) {
-          //     map.fitBounds(bounds);
-          //   }
-        }}
-        defaultZoom={15}
-        center={{
-          lat: 59.92344,
-          lng: 10.75606
-        }}
-        options={{
-          streetViewControl: false,
-          styles: MAP_STYLE,
-          fullscreenControl: false,
-          mapTypeControl: false
-        }}
-        onClick={() => this.props.setSelectedArea(null)}
-      >
-        {this.renderAreas()}
-      </GoogleMap>
-    ));
+
     return (
       <div
         style={{
@@ -292,10 +272,33 @@ class MapView extends Component<Props, State> {
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: '100vh' }} />}
           mapElement={<div style={{ height: `100%` }} />}
+          onMapRef={map => this.mapRef = map}
+          onClick={() => this.props.setSelectedArea(null)}
+          areas={this.renderAreas()}
         />
       </div>
     );
   }
 }
+
+const MapsComponent = withGoogleMap(props => (
+  <GoogleMap
+    ref={props.onMapRef}
+    defaultZoom={15}
+    center={{
+      lat: 59.92344,
+      lng: 10.75606
+    }}
+    options={{
+      streetViewControl: false,
+      styles: MAP_STYLE,
+      fullscreenControl: false,
+      mapTypeControl: false
+    }}
+    onClick={props.onClick}
+  >
+    {props.areas}
+  </GoogleMap>
+));
 
 export default (connect: any)(mapStateToProps, mapDispatchToProps)(MapView);
