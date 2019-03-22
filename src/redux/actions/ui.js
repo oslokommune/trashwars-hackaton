@@ -2,13 +2,6 @@
 
 import { View } from '../actions/ui';
 
-export function setRandomVariable(randomVariable: boolean) {
-  return {
-    type: 'SET_RANDOM_VARIABLE',
-    randomVariable
-  };
-}
-
 export function setCurrentView(currentView: View) {
   return {
     type: 'SET_CURRENT_VIEW',
@@ -20,5 +13,12 @@ export function showDrawer(showDrawer: boolean) {
   return {
     type: 'SHOW_DRAWER',
     showDrawer
+  };
+}
+
+export function setSelectedClan(selectedClanId: string) {
+  return {
+    type: 'SET_SELECTED_CLAN',
+    selectedClanId
   };
 }

@@ -1,6 +1,6 @@
 [
   {
-    "district_id": "0",
+    "districtId": "0",
     "district_name": "Grunerløkka",
     "polygon": {
       "coordinates": [

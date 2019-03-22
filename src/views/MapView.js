@@ -13,6 +13,8 @@ import { MarkerWithLabel } from 'react-google-maps/lib/components/addons/MarkerW
 import { MAP_STYLE } from '../style/mapStyle';
 import mockAreas from '../mock_data/areas';
 import { setClaim, removeClaim } from '../redux/actions/claims';
+import { getAreaClaim } from '../selectors/areas';
+import { getClanById } from '../selectors/clans';
 
 // import { MarkerIcon } from '../svg/MarkerIcon';
 import colors from '../style/colors';
@@ -20,7 +22,10 @@ import colors from '../style/colors';
 const mapStateToProps = state => {
   return {
     ui: state.ui,
-    claims: state.claims
+    claims: state.claims,
+    clans: state.clans,
+    areas: state.areas,
+    user: state.user
   };
 };
 
@@ -32,12 +37,15 @@ const mapDispatchToProps = dispatch => {
 };
 
 type State = {
-  zoomLevel: number,
   selectedArea: ?Object
 };
 
 type Props = {
   ui: Object,
+  claims: Object,
+  clans: Object,
+  areas: Object,
+  user: Object,
   setClaim: Object => void,
   removeClaim: string => void
 };
@@ -46,40 +54,34 @@ class MapView extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      zoomLevel: 15,
       selectedArea: null
     };
     this.mapRef = React.createRef();
   }
 
-  _handleZoomChanged() {
-    if (this.mapRef) {
-      const zoomLevel = this.mapRef.context
-        .__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.zoom;
-
-      if (zoomLevel !== this.state.zoomLevel) {
-        this.setState({ zoomLevel });
-      }
-    }
-  }
-
   renderAreas() {
-    return mockAreas.map(area => {
-      const areaIsClaimed = this.props.claims.find(
-        claim => claim.area.area_id === area.area_id
-      );
+    return this.props.areas.map(area => {
+      const areaClaim = getAreaClaim(this.props.claims.claims, area.areaId);
+
+      let fillColor = '#000';
+      if (
+        this.state.selectedArea &&
+        this.state.selectedArea.areaId === area.areaId
+      ) {
+        fillColor = colors.yellow;
+      } else if (areaClaim) {
+        fillColor = 'red';
+        if (areaClaim.clanId === this.props.ui.selectedClanId) {
+          fillColor = 'white';
+        }
+      }
+
       return (
         <Polygon
           path={area.polygon.coordinates}
-          key={area.area_id}
+          key={area.areaId}
           options={{
-            fillColor:
-              this.state.selectedArea &&
-              this.state.selectedArea.area_id === area.area_id
-                ? colors.yellow
-                : areaIsClaimed
-                ? 'white'
-                : '#000',
+            fillColor: fillColor,
             fillOpacity: 0.4,
             strokeColor: '#000',
             strokeOpacity: 1,
@@ -96,10 +98,15 @@ class MapView extends Component<Props, State> {
   }
 
   renderClaimView() {
+    const { ui, claims, clans, user } = this.props;
     if (!this.state.selectedArea) return null;
-    const selectedAreaIsClaimed = this.props.claims.find(
-      claim => claim.area.area_id === this.state.selectedArea.area_id
+    const areaClaim = getAreaClaim(
+      claims.claims,
+      this.state.selectedArea.areaId
     );
+    const selectedAreaIsClaimedByMe =
+      areaClaim && areaClaim.clanId === ui.selectedClanId;
+
     return (
       <div>
         <div
@@ -108,7 +115,7 @@ class MapView extends Component<Props, State> {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            height: selectedAreaIsClaimed ? 350 : 200,
+            height: selectedAreaIsClaimedByMe ? 350 : 200,
             width: '100%',
             padding: 10,
             zIndex: 1,
@@ -118,7 +125,7 @@ class MapView extends Component<Props, State> {
             color: 'white'
           }}
         >
-          {selectedAreaIsClaimed && (
+          {selectedAreaIsClaimedByMe && (
             <div
               style={{
                 fontSize: 25,
@@ -133,13 +140,13 @@ class MapView extends Component<Props, State> {
           <div
             style={{ color: colors.yellow, fontSize: 20, fontWeight: 'bold' }}
           >
-            {this.state.selectedArea.area_name}
+            {this.state.selectedArea.areaName}
           </div>
           <div>Type: Park</div>
           <div>Størrelse: {this.state.selectedArea.size}m2</div>
-          <div>Poengfaktor: {this.state.selectedArea.point_factor}</div>
+          <div>Poengfaktor: {this.state.selectedArea.pointFactor}</div>
         </div>
-        {selectedAreaIsClaimed ? (
+        {selectedAreaIsClaimedByMe ? (
           <div
             style={{
               position: 'absolute',
@@ -170,7 +177,7 @@ class MapView extends Component<Props, State> {
             </div>
             <div
               onClick={() => {
-                this.props.removeClaim(this.state.selectedArea.area_id);
+                this.props.removeClaim(this.state.selectedArea.areaId);
               }}
               style={{
                 display: 'flex',
@@ -198,10 +205,13 @@ class MapView extends Component<Props, State> {
           >
             <div
               onClick={() => {
-                this.props.setClaim({
-                  area: this.state.selectedArea,
-                  claimTime: new Date()
-                });
+                if (!areaClaim) {
+                  this.props.setClaim({
+                    clanId: this.props.ui.selectedClanId,
+                    areaId: this.state.selectedArea.areaId,
+                    time: new Date()
+                  });
+                }
               }}
               style={{
                 display: 'flex',
@@ -213,7 +223,12 @@ class MapView extends Component<Props, State> {
                 backgroundColor: colors.hamburgerMenu
               }}
             >
-              <div style={{ color: 'white' }}>Gjør krav på</div>
+              <div style={{ color: 'white' }}>
+                {areaClaim
+                  ? 'Ryddes av ' +
+                    getClanById(clans.clans, areaClaim.clanId).clanName
+                  : 'Gjør krav på'}
+              </div>
             </div>
           </div>
         )}
@@ -240,12 +255,11 @@ class MapView extends Component<Props, State> {
           //     map.fitBounds(bounds);
           //   }
         }}
-        defaultZoom={this.state.zoomLevel}
+        defaultZoom={15}
         center={{
           lat: 59.92344,
           lng: 10.75606
         }}
-        onZoomChanged={() => this._handleZoomChanged()}
         options={{
           streetViewControl: false,
           styles: MAP_STYLE,

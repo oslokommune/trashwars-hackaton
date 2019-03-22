@@ -1,14 +1,14 @@
 [
   {
-    "clan_id": "0",
-    "area_id": "0",
-    "finished_time": "2019-03-21T13:44:23+0000",
+    "clanId": "0",
+    "areaId": "0",
+    "finishedTime": "2019-03-21T13:44:23+0000",
     "points": 1000000
   },
   {
-    "clan_id": "1",
-    "area_id": "1",
-    "finished_time": "2019-03-21T13:44:23+0000",
+    "clanId": "1",
+    "areaId": "1",
+    "finishedTime": "2019-03-21T13:44:23+0000",
     "points": 500000
   }
 ]

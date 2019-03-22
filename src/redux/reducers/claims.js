@@ -1,24 +1,49 @@
 // @flow
+import mockClaims from '../../mock_data/claims';
+import mockFulfilledClaims from '../../mock_data/fulfilledClaim';
 
-export type State = Array<{ area: Object, claimTime: Date }>;
-
-const initialState: State = [];
+export type State = {
+  claims: Array<{ clanId: string, areaId: string, time: string }>,
+  fulfilledClaim: Array<{
+    clanId: string,
+    areaId: string,
+    finishedTime: string,
+    points: number
+  }>
+};
+const initialState: State = {
+  claims: mockClaims,
+  fulfilledClaim: mockFulfilledClaims
+};
 
 export default function claimsReducer(
   state: State = initialState,
   action: {
     type: string,
-    claim: { area: Object, claimTime: Date }
+    areaId: string,
+    claim: { clanId: string, areaId: string, time: string },
+    fulfilledClaim: Array<{
+      clanId: string,
+      areaId: string,
+      finishedTime: string,
+      points: number
+    }>
   }
 ): State {
   switch (action.type) {
     case 'SET_CLAIM':
-      return [...state, action.claim];
+      return { ...state, claims: [...state.claims, action.claim] };
     case 'REMOVE_CLAIM':
-      let index = state.findIndex(
-        claim => claim.area.area_id === action.areaId
+      let index = state.claims.findIndex(
+        claim => claim.areaId === action.areaId
       );
-      return [...state.slice(0, index), ...state.slice(index + 1)];
+      return {
+        ...state,
+        claims: [
+          ...state.claims.slice(0, index),
+          ...state.claims.slice(index + 1)
+        ]
+      };
     default:
       return state;
   }

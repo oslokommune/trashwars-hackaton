@@ -3,18 +3,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import colors from '../style/colors';
-import { setRandomVariable, setCurrentView } from '../redux/actions/ui';
+import { setCurrentView } from '../redux/actions/ui';
+import { getRelevantClaims } from '../selectors/claims';
+import { getAreaById } from '../selectors/areas';
+import { getClanName } from '../selectors/clans';
 
 const mapStateToProps = state => {
   return {
     ui: state.ui,
-    claims: state.claims
+    claims: state.claims,
+    clans: state.clans,
+    areas: state.areas,
+    user: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setRandomVariable: value => dispatch(setRandomVariable(value)),
     setCurrentView: currentView => dispatch(setCurrentView(currentView))
   };
 };
@@ -22,25 +27,27 @@ const mapDispatchToProps = dispatch => {
 type Props = {
   ui: Object,
   claims: Object,
-  setRandomVariable: boolean => void,
-  setCurrentView: string => void
+  clans: Object,
+  areas: Object,
+  setCurrentView: string => void,
+  user: Object
 };
 
 type State = {};
 
 class MainView extends Component<Props, State> {
   renderActiveAreas() {
-    return this.props.claims.map(claim => {
+    return getRelevantClaims().map(relevantClaim => {
       return (
-        <div className='list-item' key={claim.area.area_id}>
-          {claim.area.area_name}
+        <div className='list-item' key={relevantClaim.areaId}>
+          {getAreaById(this.props.areas, relevantClaim.areaId)}
         </div>
       );
     });
   }
 
   render() {
-    const { ui, setCurrentView } = this.props;
+    const { ui, setCurrentView, claims, clans, user } = this.props;
     return (
       <div className='page'>
         <div className='header'>
@@ -53,14 +60,14 @@ class MainView extends Component<Props, State> {
         </div>
         <div className='pageContent'>
           <div className='clan'>
-            <div className='title'>Løkka deTrashers</div>
+            <div className='title'>{getClanName(clans, ui.selectedClanId)}</div>
             <div>26 medlemmer</div>
           </div>
           <div className='label'>Kontrolert område</div>
           <div className='number'>13%</div>
           <div className='label'>Poeng</div>
-          <div className='number'>6 728 600</div>
-          <div>Aktive områder {this.props.claims.length}</div>
+          <div className='number'>{user.userScore}</div>
+          <div>Aktive områder {claims ? claims.length : 0}</div>
           {this.renderActiveAreas()}
           <button onClick={() => setCurrentView('MAP')}>
             + Gjør krav på område
