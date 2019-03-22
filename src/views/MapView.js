@@ -237,6 +237,15 @@ class MapView extends Component<Props, State> {
     // if (coordinates.length > 0 && !selectedSubject) {
     //   this.mapRef.fitBounds(bounds);
     // }
+
+    // Wait for Google Maps API hack
+    if (!window.google) {
+      window.setTimeout(() => {
+        console.log('maps api not available yet');
+        this.forceUpdate();
+      }, 500);
+      return null;
+    }
     const MapsComponent = withGoogleMap(props => (
       <GoogleMap
         ref={map => {
