@@ -22,19 +22,20 @@ export default function claimsReducer(
     type: string,
     areaId: string,
     claim: { clanId: string, areaId: string, time: string },
-    fulfilledClaim: Array<{
+    fulfilledClaim: {
       clanId: string,
       areaId: string,
       finishedTime: string,
       points: number
-    }>
+    },
   }
 ): State {
+  let index;
   switch (action.type) {
     case 'SET_CLAIM':
       return { ...state, claims: [...state.claims, action.claim] };
     case 'REMOVE_CLAIM':
-      let index = state.claims.findIndex(
+      index = state.claims.findIndex(
         claim => claim.areaId === action.areaId
       );
       return {
@@ -42,6 +43,17 @@ export default function claimsReducer(
         claims: [
           ...state.claims.slice(0, index),
           ...state.claims.slice(index + 1)
+        ]
+      };
+    case 'FULFILL_CLAIM':
+      index = state.claims.findIndex(
+        claim => claim.areaId === action.areaId
+      );
+      return {
+        ...state,
+        fulfilledClaim: [
+          ...state.fulfilledClaim,
+          action.fulfilledClaim,
         ]
       };
     default:

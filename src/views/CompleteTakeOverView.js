@@ -6,6 +6,7 @@ import colors from '../style/colors';
 import { setCurrentView } from '../redux/actions/ui';
 import { getAreaById } from '../selectors/areas';
 import { getClanById } from '../selectors/clans';
+import { fulfillClaim, removeClaim } from '../redux/actions/claims';
 
 const mapStateToProps = state => ({
   ui: state.ui,
@@ -15,7 +16,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentView: currentView => dispatch(setCurrentView(currentView))
+  setCurrentView: currentView => dispatch(setCurrentView(currentView)),
+  fulfillClaim: claim => dispatch(fulfillClaim(claim)),
+  removeClaim: areaId => dispatch(removeClaim(areaId)),
 });
 
 type Props = {
@@ -23,7 +26,9 @@ type Props = {
   claims: Object,
   clans: Object,
   areas: Object,
-  setCurrentView: string => void
+  setCurrentView: string => void,
+  fulfillClaim: any => void,
+  removeClaim: string => void,
 };
 
 type State = {
@@ -54,6 +59,20 @@ class CompleteTakeOverView extends Component<Props, State> {
     this.setState({
       pickUp: event.currentTarget.value === 'yes',
     });
+  }
+
+  handleFulfillClaim() {
+    const {ui} = this.props;
+
+    this.props.fulfillClaim({
+      areaId: ui.selectedAreaId,
+      clainId: ui.selectedClanId,
+      finishedTime: new Date(),
+      points: 1000,
+    });
+
+    this.props.removeClaim(ui.selectedAreaId);
+    this.props.setCurrentView('MAIN');
   }
 
   render() {
@@ -263,6 +282,7 @@ class CompleteTakeOverView extends Component<Props, State> {
             paddingTop: 8,
             fontWeight: 'bold'
           }}
+          onClick={this.handleFulfillClaim.bind(this)}
         >
           FULLFØR
         </button>

@@ -57,6 +57,7 @@ class MapView extends Component<Props, State> {
   renderAreas() {
     return this.props.areas.map(area => {
       const areaClaim = getAreaClaim(this.props.claims.claims, area.areaId);
+      const fulfilledClaim = this.props.claims.fulfilledClaim.find(claim => claim && claim.areaId === area.areaId);
 
       let fillColor = '#000';
       if (
@@ -68,6 +69,10 @@ class MapView extends Component<Props, State> {
         fillColor = 'red';
         if (areaClaim.clanId === this.props.ui.selectedClanId) {
           fillColor = 'white';
+        }
+      } else if (fulfilledClaim) {
+        if (fulfilledClaim.clanId === this.props.ui.selectedClanId) {
+          fillColor = 'green';
         }
       }
 

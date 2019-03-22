@@ -17,3 +17,11 @@ export function removeClaim(areaId) {
     areaId
   };
 }
+
+export function fulfillClaim(fulfilledClaim: {
+}) {
+  return {
+    type: 'FULFILL_CLAIM',
+    fulfillClaim,
+  };
+}
